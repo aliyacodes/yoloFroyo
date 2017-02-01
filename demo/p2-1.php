@@ -1,21 +1,21 @@
 <?php
 /**
- * p2-1.php, based on demo_postback.php, is a single page web application that allows us to request and view 
+ * p2-1.php, based on demo_postback.php, is a single page web application that allows us to request and view
  * a customer's name
  *
  * This version uses no HTML directly so we can code collapse more efficiently
  *
- * This page is a model on which to demonstrate fundamentals of single page, postback 
+ * This page is a model on which to demonstrate fundamentals of single page, postback
  * web applications.
  *
- * Any number of additional steps or processes can be added by adding keywords to the switch 
+ * Any number of additional steps or processes can be added by adding keywords to the switch
  * statement and identifying a hidden form field in the previous step's form:
  *
  *<code>
  * <input type="hidden" name="act" value="next" />
  *</code>
- * 
- * The above live of code shows the parameter "act" being loaded with the value "next" which would be the 
+ *
+ * The above live of code shows the parameter "act" being loaded with the value "next" which would be the
  * unique identifier for the next step of a multi-step process
  *
  * @package ITC281
@@ -27,7 +27,7 @@
  * @todo add more complicated checkbox & radio button examples
  */
 
-# '../' works for a sub-folder.  use './' for the root  
+# '../' works for a sub-folder.  use './' for the root
 require '../inc_0700/config_inc.php'; #provides configuration, pathing, error handling, db credentials
 include 'items4.php';
 /*
@@ -46,23 +46,24 @@ $config->nav1 = array("page.php"=>"New Page!") + $config->nav1; #add a new page 
 //END CONFIG AREA ----------------------------------------------------------
 
 # Read the value of 'action' whether it is passed via $_POST or $_GET with $_REQUEST
-if(isset($_REQUEST['act'])){$myAction = (trim($_REQUEST['act']));}else{$myAction = "";}
+if(isset($_REQUEST['act'])){$myAction = (trim($_REQUEST['act']));}
+else{$myAction = "";}
 
-switch ($myAction) 
+switch ($myAction)
 {//check 'act' for type of process
 	case "display": # 2)Display user's name!
 	 	showData();
 	 	break;
-	default: # 1)Ask user to enter their name 
+	default: # 1)Ask user to enter their name
 	 	showForm();
 }
 
 function showForm()
 {# shows form so user can enter their name.  Initial scenario
     global $config;
-	get_header(); #defaults to header_inc.php	
-	
-	echo 
+	get_header(); #defaults to header_inc.php
+
+	echo
 	'<script type="text/javascript" src="' . VIRTUAL_PATH . 'include/util.js"></script>
 	<script type="text/javascript">
 		function checkForm(thisForm)
@@ -72,26 +73,40 @@ function showForm()
 		}
 	</script>
 	<h3 align="center">' . smartTitle() . '</h3>
-	<p align="center">Please enter your name</p> 
+	<p align="center">Please enter your name</p>
 	<form action="' . THIS_PAGE . '" method="post" onsubmit="return checkForm(this);">
 		<table align="center">
 			<tr>
 
 				<td>';
-    
+
     /*
-    
+
     ' . XXX . '
-    
+
     */
-    foreach($config->items as $item)
-    {
-    
-    //    echo "<p>ID:$item->ID Name:$item->Name</p>";
-        echo '<p>' . $item->Name . ' <input type="text" name="item_' . $item->ID . '" /></p>';
-        
-        
-    };          
+		//Type of Froyo
+  echo '
+				<h2>Name</h2><br>
+				<input type="text" name="yourName" />
+
+				<h2>Size</h2><br>
+				<input type="radio" name="size" value="small"> Small $1.00<br>
+				<input type="radio" name="size" value="medium"> Medium $2.00<br>
+				<input type="radio" name="size" value="large"> Large $3.00
+
+				<h2>Flavor</h2><br>
+				<input type="radio" name="flavor" value="choc"> Chocolate<br>
+  			<input type="radio" name="flavor" value="vanilla"> Vanilla<br>
+  			<input type="radio" name="flavor" value="swirl"> Swirl
+
+				<h2>Toppings</h2><br>
+				<input type="checkbox" name="toppings[]" value="peanuts">Peanuts<br>
+				<input type="checkbox" name="toppings[]" value="coconut">Coconut<br>
+				<input type="checkbox" name="toppings[]" value="almonds">Almonds<br>
+
+	';
+
                 echo '
                 <!--
 					<input type="text" name="YourName" /><font color="red"><b>*</b></font> <em>(alphabetic only)</em>
@@ -112,28 +127,34 @@ function showForm()
 
 function showData()
 {#form submits here we show entered name
-    
-    dumpDie($_POST);
-    
-    
+
+    var_dump($_POST);
+
+
 	get_header(); #defaults to footer_inc.php
-	if(!isset($_POST['YourName']) || $_POST['YourName'] == '')
-	{//data must be sent	
-		feedback("No form data submitted"); #will feedback to submitting page via session variable
-		myRedirect(THIS_PAGE);
-	}  
-	
-	if(!ctype_alnum($_POST['YourName']))
-	{//data must be alphanumeric only	
-		feedback("Only letters and numbers are allowed.  Please re-enter your name."); #will feedback to submitting page via session variable
-		myRedirect(THIS_PAGE);
-	}
-	
-	$myName = strip_tags($_POST['YourName']);# here's where we can strip out unwanted data
-	
-	echo '<h3 align="center">' . smartTitle() . '</h3>';
-	echo '<p align="center">Your name is <b>' . $myName . '</b>!</p>';
-	echo '<p align="center"><a href="' . THIS_PAGE . '">RESET</a></p>';
-	get_footer(); #defaults to footer_inc.php
+	// if(!isset($_POST['YourName']) || $_POST['YourName'] == '')
+	// {//data must be sent
+	// 	feedback("No form data submitted"); #will feedback to submitting page via session variable
+	// 	myRedirect(THIS_PAGE);
+	// }
+
+	// if(!ctype_alnum($_POST['YourName']))
+	// {//data must be alphanumeric only
+	// 	feedback("Only letters and numbers are allowed.  Please re-enter your name."); #will feedback to submitting page via session variable
+	// 	myRedirect(THIS_PAGE);
+	// }
+
+
+		$order[] = new Item($_POST["yourName"],$_POST["size"],$_POST["flavor"],$_POST["toppings"]);
+		// $order = new Item($yourName,$size,$flavor,$toppings[]);
+
+		dumpDie($order);
+
+	// $myName = strip_tags($_POST['YourName']);# here's where we can strip out unwanted data
+
+	// echo '<h3 align="center">' . smartTitle() . '</h3>';
+	// echo '<p align="center">Your name is <b>' . $myName . '</b>!</p>';
+	// echo '<p align="center"><a href="' . THIS_PAGE . '">RESET</a></p>';
+	// get_footer(); #defaults to footer_inc.php
 }
 ?>
