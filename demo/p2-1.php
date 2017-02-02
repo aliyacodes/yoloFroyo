@@ -128,8 +128,6 @@ function showForm()
 function showData()
 {#form submits here we show entered name
 
-    var_dump($_POST);
-
 
 	get_header(); #defaults to footer_inc.php
 	// if(!isset($_POST['YourName']) || $_POST['YourName'] == '')
@@ -148,8 +146,24 @@ function showData()
 		$order[] = new Item($_POST["yourName"],$_POST["size"],$_POST["flavor"],$_POST["toppings"]);
 		// $order = new Item($yourName,$size,$flavor,$toppings[]);
 
-		dumpDie($order);
+		foreach ($order as $order) {
 
+		//make the properties in my object a variable
+		$orderArr = get_object_vars ( $order );
+		// dumpDie($orderArr);
+
+		//Isolate just the toppings array from the main array
+		$toppingsArr = $orderArr['Toppings'];
+		//implode it into a string with a space between
+		$toppingsArr = implode(', ', $toppingsArr);
+
+
+		echo '
+			<h2>' . $orderArr['YourName'] . '\'s Order</h2>
+			<p>A ' . $orderArr['Size'] . ' ' . $orderArr['Flavor'] . ' Frozen yogurt with ' . $toppingsArr . ' on top! *price*</p>
+
+		';
+		}
 	// $myName = strip_tags($_POST['YourName']);# here's where we can strip out unwanted data
 
 	// echo '<h3 align="center">' . smartTitle() . '</h3>';
