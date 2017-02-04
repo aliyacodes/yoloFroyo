@@ -1,31 +1,16 @@
 <?php
 //items4.php
 
-$myItem = new Item(1,"Taco","Our taco is awesome!",1.95);
-$myItem->addExtra("Sour Cream");
-$myItem->addExtra("Cheese");
-$myItem->addExtra("Hot Sauce");
+$myItem = new Item(1,"Vanilla Frozen Yogurt","Delicious, classic vanilla frozen yogurt goes with anything.",4.95);
 $config->items[] = $myItem;
 
-$myItem = new Item(2,"Sundae","Our sundae is awesome!",6.95);
-$myItem->addExtra("Chocolate Sauce");
-$myItem->addExtra("Cherries");
-$myItem->addExtra("Sprinkles");
+$myItem = new Item(2,"Chocolate Frozen Yogurt","Our chocolate is made with fair trade cocoa beans from Guatemala.",4.95);
 $config->items[] = $myItem;
 
-$myItem = new Item(3,"Salad","Our salad is awesome!",4.95);
-$myItem->addExtra("Lemon");
-$myItem->addExtra("Salmon");
-$myItem->addExtra("Croutons");
-$myItem->addExtra("Bacon");
+$myItem = new Item(3,"Seasonal Hippy Raspberry","Made exclusively from vegan raspberries",5.95);
 $config->items[] = $myItem;
 
-//$items[] = new Item(1,"Taco","Our taco is awesome!",1.95);
-//$items[] = new Item(2,"Sundae","Our sundaes are awesome!",5.95);
-//$items[] = new Item(3,"Salad","Our salad is awesome!",7.95);
-
-
-
+//move this class to another file!
 class Item {
     
     public $ID = 0;

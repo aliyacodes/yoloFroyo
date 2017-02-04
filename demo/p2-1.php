@@ -58,7 +58,7 @@ switch ($myAction)
 }
 
 function showForm()
-{# shows form so user can enter their name.  Initial scenario
+{# shows form so user can enter their order.  Initial scenario
     global $config;
 	get_header(); #defaults to header_inc.php	
 	
@@ -67,40 +67,34 @@ function showForm()
 	<script type="text/javascript">
 		function checkForm(thisForm)
 		{//check form data for valid info
-			if(empty(thisForm.YourName,"Please Enter Your Name")){return false;}
+			if(empty(thisForm.YourOrder,"Place Your Order")){return false;}
 			return true;//if all is passed, submit!
 		}
 	</script>
-	<h3 align="center">' . smartTitle() . '</h3>
-	<p align="center">Please enter your name</p> 
+	<h3 align="center">Welcome To Yolo Froyo</h3>
+	<p align="center">Please Place Your Order Through the Form Below</p> 
 	<form action="' . THIS_PAGE . '" method="post" onsubmit="return checkForm(this);">
 		<table align="center">
 			<tr>
 
 				<td>';
     
-    /*
-    
-    ' . XXX . '
-    
-    */
-    foreach($config->items as $item)
+    foreach($config->items as $item)//for each item in items4.php...
     {
-    
-    //    echo "<p>ID:$item->ID Name:$item->Name</p>";
-        echo '<p>' . $item->Name . ' <input type="text" name="item_' . $item->ID . '" /></p>';
-        
+    //display the item name
+        echo '<p>' . $item->Name . ' - quantity: <input type="text" name="item_' . $item->ID . '" /> ' . $item->Price . ' each</p>';
         
     };          
                 echo '
                 <!--
-					<input type="text" name="YourName" /><font color="red"><b>*</b></font> <em>(alphabetic only)</em>
-                    -->
+					<input type="text" name="YourOrder" /><font color="red"><b>*</b></font> <em>(alphabetic only)</em>
+                   -->
+                    
 				</td>
 			</tr>
 			<tr>
 				<td align="center" colspan="2">
-					<input type="submit" value="Please Enter Your Name"><em>(<font color="red"><b>*</b> required field</font>)</em>
+					<input type="submit" value="Place Order"><em></em>
 				</td>
 			</tr>
 		</table>
@@ -111,25 +105,26 @@ function showForm()
 }
 
 function showData()
-{#form submits here we show entered name
+{#form submits here
     
-    dumpDie($_POST);
+    //var_dump and then die:
+    //dumpDie($_POST);
     
     
-	get_header(); #defaults to footer_inc.php
-	if(!isset($_POST['YourName']) || $_POST['YourName'] == '')
+	get_header(); #defaults to header_inc.php
+	if(!isset($_POST['YourOrder']) || $_POST['YourOrder'] == '')
 	{//data must be sent	
 		feedback("No form data submitted"); #will feedback to submitting page via session variable
 		myRedirect(THIS_PAGE);
 	}  
 	
-	if(!ctype_alnum($_POST['YourName']))
+	if(!ctype_alnum($_POST['YourOrder']))
 	{//data must be alphanumeric only	
 		feedback("Only letters and numbers are allowed.  Please re-enter your name."); #will feedback to submitting page via session variable
 		myRedirect(THIS_PAGE);
 	}
 	
-	$myName = strip_tags($_POST['YourName']);# here's where we can strip out unwanted data
+	$myName = strip_tags($_POST['YourOrder']);# here's where we can strip out unwanted data
 	
 	echo '<h3 align="center">' . smartTitle() . '</h3>';
 	echo '<p align="center">Your name is <b>' . $myName . '</b>!</p>';
