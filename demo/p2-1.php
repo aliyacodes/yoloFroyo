@@ -1,21 +1,21 @@
 <?php
 /**
- * p2-1.php, based on demo_postback.php, is a single page web application that allows us to request and view 
+ * p2-1.php, based on demo_postback.php, is a single page web application that allows us to request and view
  * a customer's name
  *
  * This version uses no HTML directly so we can code collapse more efficiently
  *
- * This page is a model on which to demonstrate fundamentals of single page, postback 
+ * This page is a model on which to demonstrate fundamentals of single page, postback
  * web applications.
  *
- * Any number of additional steps or processes can be added by adding keywords to the switch 
+ * Any number of additional steps or processes can be added by adding keywords to the switch
  * statement and identifying a hidden form field in the previous step's form:
  *
  *<code>
  * <input type="hidden" name="act" value="next" />
  *</code>
- * 
- * The above live of code shows the parameter "act" being loaded with the value "next" which would be the 
+ *
+ * The above live of code shows the parameter "act" being loaded with the value "next" which would be the
  * unique identifier for the next step of a multi-step process
  *
  * @package ITC281
@@ -27,7 +27,7 @@
  * @todo add more complicated checkbox & radio button examples
  */
 
-# '../' works for a sub-folder.  use './' for the root  
+# '../' works for a sub-folder.  use './' for the root
 require '../inc_0700/config_inc.php'; #provides configuration, pathing, error handling, db credentials
 include 'items4.php';
 /*
@@ -46,55 +46,76 @@ $config->nav1 = array("page.php"=>"New Page!") + $config->nav1; #add a new page 
 //END CONFIG AREA ----------------------------------------------------------
 
 # Read the value of 'action' whether it is passed via $_POST or $_GET with $_REQUEST
-if(isset($_REQUEST['act'])){$myAction = (trim($_REQUEST['act']));}else{$myAction = "";}
+if(isset($_REQUEST['act'])){$myAction = (trim($_REQUEST['act']));}
+else{$myAction = "";}
 
-switch ($myAction) 
+switch ($myAction)
 {//check 'act' for type of process
 	case "display": # 2)Display user's name!
 	 	showData();
 	 	break;
-	default: # 1)Ask user to enter their name 
+	default: # 1)Ask user to enter their name
 	 	showForm();
 }
 
 function showForm()
-{# shows form so user can enter their order.  Initial scenario
+{# shows form so user can enter their name.  Initial scenario
     global $config;
-	get_header(); #defaults to header_inc.php	
-	
-	echo 
+	get_header(); #defaults to header_inc.php
+
+	echo
 	'<script type="text/javascript" src="' . VIRTUAL_PATH . 'include/util.js"></script>
 	<script type="text/javascript">
 		function checkForm(thisForm)
 		{//check form data for valid info
-			if(empty(thisForm.YourOrder,"Place Your Order")){return false;}
+			if(empty(thisForm.YourName,"Place Order")){return false;}
 			return true;//if all is passed, submit!
 		}
 	</script>
-	<h3 align="center">Welcome To Yolo Froyo</h3>
-	<p align="center">Please Place Your Order Through the Form Below</p> 
+	<h3 align="center">' . smartTitle() . '</h3>
+	<p align="center">Please oder from the form below</p>
 	<form action="' . THIS_PAGE . '" method="post" onsubmit="return checkForm(this);">
 		<table align="center">
 			<tr>
 
 				<td>';
-    
-    foreach($config->items as $item)//for each item in items4.php...
-    {
-    //display the item name
-        echo '<p>' . $item->Name . ' - quantity: <input type="text" name="item_' . $item->ID . '" /> ' . $item->Price . ' each</p>';
-        
-    };          
+
+    /*
+
+    ' . XXX . '
+
+    */
+		//Type of Froyo
+  echo '
+				<h2>Your Name</h2><br>
+				<input type="text" name="yourName" />
+
+				<h2>Size</h2><br>
+				<input type="radio" name="size" value="small"> Small $1.00<br>
+				<input type="radio" name="size" value="medium"> Medium $2.00<br>
+				<input type="radio" name="size" value="large"> Large $3.00
+
+				<h2>Flavor</h2><br>
+				<input type="radio" name="flavor" value="choc"> Chocolate<br>
+  			<input type="radio" name="flavor" value="vanilla"> Vanilla<br>
+  			<input type="radio" name="flavor" value="swirl"> Swirl
+
+				<h2>Toppings</h2><br>
+				<input type="checkbox" name="toppings[]" value="peanuts">Peanuts<br>
+				<input type="checkbox" name="toppings[]" value="coconut">Coconut<br>
+				<input type="checkbox" name="toppings[]" value="almonds">Almonds<br>
+
+	';
+
                 echo '
                 <!--
-					<input type="text" name="YourOrder" /><font color="red"><b>*</b></font> <em>(alphabetic only)</em>
-                   -->
-                    
+					<input type="text" name="YourName" /><font color="red"><b>*</b></font> <em>(alphabetic only)</em>
+                    -->
 				</td>
 			</tr>
 			<tr>
 				<td align="center" colspan="2">
-					<input type="submit" value="Place Order"><em></em>
+					<input type="submit" value="Please Enter Your Name"><em>(<font color="red"><b>*</b> required field</font>)</em>
 				</td>
 			</tr>
 		</table>
@@ -105,30 +126,60 @@ function showForm()
 }
 
 function showData()
-{#form submits here
+{#form submits here we show entered name
+
+
+	get_header(); #defaults to footer_inc.php
+	// if(!isset($_POST['YourName']) || $_POST['YourName'] == '')
+	// {//data must be sent
+	// 	feedback("No form data submitted"); #will feedback to submitting page via session variable
+	// 	myRedirect(THIS_PAGE);
+	// }
+
+	// if(!ctype_alnum($_POST['YourName']))
+	// {//data must be alphanumeric only
+	// 	feedback("Only letters and numbers are allowed.  Please re-enter your name."); #will feedback to submitting page via session variable
+	// 	myRedirect(THIS_PAGE);
+	// }
+
+
+		$order[] = new Item($_POST["yourName"],$_POST["size"],$_POST["flavor"],$_POST["toppings"]);
+		// $order = new Item($yourName,$size,$flavor,$toppings[]);
     
-    //var_dump and then die:
-    //dumpDie($_POST);
-    
-    
-	get_header(); #defaults to header_inc.php
-	if(!isset($_POST['YourOrder']) || $_POST['YourOrder'] == '')
-	{//data must be sent	
-		feedback("No form data submitted"); #will feedback to submitting page via session variable
-		myRedirect(THIS_PAGE);
-	}  
-	
-	if(!ctype_alnum($_POST['YourOrder']))
-	{//data must be alphanumeric only	
-		feedback("Only letters and numbers are allowed.  Please re-enter your name."); #will feedback to submitting page via session variable
-		myRedirect(THIS_PAGE);
-	}
-	
-	$myName = strip_tags($_POST['YourOrder']);# here's where we can strip out unwanted data
-	
-	echo '<h3 align="center">' . smartTitle() . '</h3>';
-	echo '<p align="center">Your name is <b>' . $myName . '</b>!</p>';
-	echo '<p align="center"><a href="' . THIS_PAGE . '">RESET</a></p>';
-	get_footer(); #defaults to footer_inc.php
+		foreach ($order as $order) {
+
+		//make the properties in my object a variable
+		$orderArr = get_object_vars ( $order );
+		// dumpDie($orderArr);
+
+		//Isolate just the toppings array from the main array
+		$toppingsArr = $orderArr['Toppings'];
+		//implode it into a string with a space between
+		$toppingsArr = implode(', ', $toppingsArr);
+            
+        //get the price
+        if ($_POST["size"] == 'small'){
+            $Total = '$1.00';
+        }
+        elseif ($_POST["size"] == 'medium'){
+            $Total = '$2.00';
+        }
+        elseif ($_POST["size"] == 'large'){
+            $Total = '$1.00';
+        }
+            
+		echo '
+			<h2>' . $orderArr['YourName'] . '\'s Order</h2>
+			<p>A ' . $orderArr['Size'] . ' ' . $orderArr['Flavor'] . ' Frozen yogurt with ' . $toppingsArr . ' on top!</p>
+            <p>Your total:  ' . $Total . '</p>
+
+		';
+		}
+	// $myName = strip_tags($_POST['YourName']);# here's where we can strip out unwanted data
+
+	// echo '<h3 align="center">' . smartTitle() . '</h3>';
+	// echo '<p align="center">Your name is <b>' . $myName . '</b>!</p>';
+	// echo '<p align="center"><a href="' . THIS_PAGE . '">RESET</a></p>';
+	// get_footer(); #defaults to footer_inc.php
 }
 ?>
