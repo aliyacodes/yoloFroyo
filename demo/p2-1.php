@@ -165,7 +165,7 @@ function showData()
             $Total = '$2.00';
         }
         elseif ($_POST["size"] == 'large'){
-            $Total = '$1.00';
+            $Total = '$3.00';
         }
             
 		echo '
