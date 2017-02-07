@@ -1,11 +1,7 @@
 <?php
 //items4.php
 
-// $myItem = new Item(1,"Taco","Our Tacos are awesome!",4.95);
-// $myItem->addExtra("Sour Cream");
-// $myItem->addExtra("Cheese");
-// $myItem->addExtra("Guacamole");
-// $config->items[] = $myItem;
+//Create objects
 
 $myItem = new Item(1,"Chocolate Froyo","Our Chocolate Froyo is sinful!",3.95);
 $myItem->addExtra("Sprinkles");
@@ -25,26 +21,13 @@ $myItem->addExtra("Chocolate Sauce");
 $myItem->addExtra("Nuts");
 $config->items[] = $myItem;
 
-// $myItem = new Item(3,"Salad","Our Salads are awesome!",5.95);
-// $myItem->addExtra("Croutons");
-// $myItem->addExtra("Bacon");
-// $myItem->addExtra("Lemon Wedges");
-// $myItem->addExtra("Avacado");
-// $config->items[] = $myItem;
+/**
+* Class Item allows the program to create myItem objects of frozen yogurt; objects with size, price, flavor and topping properties; in an array.
+* <?php $myItem = new Item(1,"Chocolate Froyo","Our Chocolate Froyo is sinful!",3.95); ?>
+* @todo none
+*/ 
 
-
-//create a counter to load the ids...
-//$items[] = new Item(1,"Taco","Our Tacos are awesome!",4.95);
-//$items[] = new Item(2,"Sundae","Our Sundaes are awesome!",3.95);
-//$items[] = new Item(3,"Salad","Our Salads are awesome!",5.95);
-
-/*
-echo '<pre>';
-var_dump($items);
-echo '</pre>';
-die;
-*/
-
+// Create Item Class
 
 class Item
 {
@@ -54,6 +37,8 @@ class Item
     public $Price = 0;
     public $Extras = array();
 
+    //item constructor
+    
     public function __construct($ID,$Name,$Description,$Price)
     {
         $this->ID = $ID;
@@ -63,6 +48,8 @@ class Item
 
     }#end Item constructor
 
+    //add the array items separately
+    
     public function addExtra($extra)
     {
         $this->Extras[] = $extra;
