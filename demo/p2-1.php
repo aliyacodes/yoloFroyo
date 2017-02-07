@@ -18,12 +18,11 @@
  * The above live of code shows the parameter "act" being loaded with the value "next" which would be the 
  * unique identifier for the next step of a multi-step process
  *
- * @package ITC281
- * @author Bill Newman <williamnewman@gmail.com>
- * @version 1.1 2011/10/11
- * @link http://www.newmanix.com/
+ * @package ITC250
+ * @author Liz Stone <stoneliz@hotmail.com>
+ * @version 1.1 2017/02/07
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License ("OSL") v. 3.0
- * @todo finish instruction sheet
+ * @todo add more styling
  * @todo add more complicated checkbox & radio button examples
  */
 
@@ -58,7 +57,7 @@ switch ($myAction)
 }
 
 function showForm()
-{# shows form so user can enter their name.  Initial scenario
+{# shows form so user can submit yogurt order.  Initial scenario
     global $config;
 	get_header(); #defaults to header_inc.php	
 	
