@@ -7,7 +7,19 @@
 // $myItem->addExtra("Guacamole");
 // $config->items[] = $myItem;
 
-$myItem = new Item(2,"Sundae","Our Sundaes are awesome!",3.95);
+$myItem = new Item(1,"Chocolate Froyo","Our Chocolate Froyo is sinful!",3.95);
+$myItem->addExtra("Sprinkles");
+$myItem->addExtra("Chocolate Sauce");
+$myItem->addExtra("Nuts");
+$config->items[] = $myItem;
+
+$myItem = new Item(2,"Vanilla Froyo","Our Vanilla Froyo is exotic!",3.95);
+$myItem->addExtra("Sprinkles");
+$myItem->addExtra("Chocolate Sauce");
+$myItem->addExtra("Nuts");
+$config->items[] = $myItem;
+
+$myItem = new Item(3,"Chocolate & Vanilla swirl Froyo","Our swirl Froyo is the best of both worlds!",3.95);
 $myItem->addExtra("Sprinkles");
 $myItem->addExtra("Chocolate Sauce");
 $myItem->addExtra("Nuts");

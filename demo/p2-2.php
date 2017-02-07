@@ -29,7 +29,7 @@
 
 # '../' works for a sub-folder.  use './' for the root
 require '../inc_0700/config_inc.php'; #provides configuration, pathing, error handling, db credentials
-include 'itemsP-2.php'; 
+include 'itemsP-2.php';
 /*
 $config->metaDescription = 'Web Database ITC281 class website.'; #Fills <meta> tags.
 $config->metaKeywords = 'SCCC,Seattle Central,ITC281,database,mysql,php';
@@ -82,13 +82,26 @@ function showForm()
             //echo "<p>ID:$item->ID  Name:$item->Name</p>";
             //echo '<p>Taco <input type="text" name="item_1" /></p>';
 
-              echo '<p>' . $item->Name . ' <input type="text" name="item_' . $item->ID . '" /></p>';
+              echo '<p><b>Qty.</b>
+							<select name="item_' . $item->ID . '">
+						    <option value="0">0</option>
+						    <option value="1">1</option>
+						    <option value="2">2</option>
+						    <option value="3">3</option>
+						    <option value="4">4</option>
+						  </select> <b> ' . $item->Name . '</b> <i> ~ ' . $item->Description . '</i></p>
 
-          }
+
+							<p><input type="checkbox" name="item_' . $item->Extras[0] . '" /> ' . $item->Extras[0] . ' </p>
+							<p><input type="checkbox" name="item_' . $item->Extras[1] . '" /> ' . $item->Extras[1] . ' </p>
+							<p><input type="checkbox" name="item_' . $item->Extras[2] . '" /> ' . $item->Extras[2] . ' </p><br><br>
+
+
+							';}
 
           echo '
 				<p>
-					<input type="submit" value="Please Enter Your Name"><em>(<font color="red"><b>*</b> required field</font>)</em>
+					<input type="submit" value="Submit Order"><em>(<font color="red"><b>*</b> required field</font>)</em>
 				</p>
 		<input type="hidden" name="act" value="display" />
 	</form>
