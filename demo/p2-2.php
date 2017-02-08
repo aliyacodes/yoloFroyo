@@ -86,9 +86,9 @@ function showForm()
 						  </select> <b> ' . $item->Name . '</b> <i> ~ ' . $item->Description . '</i></p>
 
 
-							<p><input type="checkbox" name="item_' . $item->Extras[0] . '" /> ' . $item->Extras[0] . ' </p>
-							<p><input type="checkbox" name="item_' . $item->Extras[1] . '" /> ' . $item->Extras[1] . ' </p>
-							<p><input type="checkbox" name="item_' . $item->Extras[2] . '" /> ' . $item->Extras[2] . ' </p><br><br>
+							<p><input type="checkbox" value="' . $item->Extras[0] . '" name="extra_' . $item->Extras[0] . '_[]" /> ' . $item->Extras[0] . ' </p>
+							<p><input type="checkbox" value="' . $item->Extras[1] . '" name="extra_' . $item->Extras[1] . '_[]" /> ' . $item->Extras[1] . ' </p>
+							<p><input type="checkbox" value="' . $item->Extras[2] . '" name="extra_' . $item->Extras[2] . '_[]" /> ' . $item->Extras[2] . ' </p><br><br>
 
 
 							';}
@@ -116,15 +116,16 @@ function showData()
     {//loop the form elements
 
         //if form name attribute starts with 'item_', process it
-        if(substr($name,0,5)=='item_')
-        {
-            //explode the string into an array on the "_"
-            $name_array = explode('_',$name);
-
-            //id is the second element of the array
-			//forcibly cast to an int in the process
-            $id = (int)$name_array[1];
-
+      if(substr($name,0,5)=='item_')
+      {
+				if ((int)$value > 0 )
+				{
+					 //explode the string into an array on the "_"
+					$name_array = explode('_',$name);
+					//dumpDie();
+					//id is the second element of the array
+					//forcibly cast to an int in the process
+					$id = (int)$name_array[1];
 			/*
 				Here is where you'll do most of your work
 				Use $id to loop your array of items and return
@@ -139,12 +140,34 @@ function showData()
 				and create subtotals, etc.
 
 			*/
-            echo "<p>You ordered $value of item number $id</p>";
+            echo "<p>You ordered $value of the item $id</p>";
 
-        }
+        } //end post_ value
 
+				//if form name attribute starts with 'item_', process it
+				/*
+        if(substr($name,0,6)=='extra_1')
+        {
+            //explode the string into an array on the "_"
+            $name_array = explode('_',$name);
 
+						foreach ($name_array as $key => $value) {
 
+						if (is_array($_POST[$name])){
+							var_dump($name);
+							echo implode(', ',$name);
+
+						}else{
+							echo $name;
+						}
+
+							$id = (int)$name_array[1];
+							echo "<p>You ordered $value of item number $id</p>";
+						}//end for each
+
+				} //substring extra */
+
+			}
     }
 
 
