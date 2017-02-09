@@ -135,8 +135,7 @@ function showData()
 
 					$total = $value * $itemArray['Price'];
 
-          echo '<p>You ordered '.$value.' of the '.$itemArray['Name'].' at '.$itemArray['Price'].' each, totaling '.$total.' </p>';
-
+          echo $value.' '.$itemArray['Name'].' at '.$itemArray['Price'].' each Totaling '.$total.' </p>';
 
         } //end post_ value
 
