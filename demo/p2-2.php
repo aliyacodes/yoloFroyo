@@ -105,7 +105,7 @@ function showForm()
 
 function showData()
 {#form submits here we show entered name
-
+	global $config;
     //dumpDie($_POST);
      get_header(); #defaults to footer_inc.php
 
@@ -122,25 +122,20 @@ function showData()
 				{
 					 //explode the string into an array on the "_"
 					$name_array = explode('_',$name);
-					//dumpDie();
-					//id is the second element of the array
-					//forcibly cast to an int in the process
+
+					//forcibly cast to an int in the process and "id" is the second element of the array.
 					$id = (int)$name_array[1];
-			/*
-				Here is where you'll do most of your work
-				Use $id to loop your array of items and return
-				item data such as price.
+					// minus 1 to make id equal the correct number in items array.
+					$id = $id - 1;
+					//get global "items" from $config and put in $id var to call the correct one.
+					$itemObj = $config->items[$id];
+					//It calls an object of item. So convert to array of vars with "get_object_vars()"
+					$itemArray = get_object_vars ( $itemObj );
 
-				Consider creating a function to return a specific item
-				from your items array, for example:
+					$total = $value * $itemArray['Price'];
 
-				$thisItem = getItem($id);
+          echo '<p>You ordered '.$value.' of the '.$itemArray['Name'].' totaling '.$total.' </p>';
 
-				Use $value to determine the number of items ordered
-				and create subtotals, etc.
-
-			*/
-            echo "<p>You ordered $value of the item $id</p>";
 
         } //end post_ value
 

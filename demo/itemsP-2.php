@@ -25,7 +25,7 @@ $config->items[] = $myItem;
 * Class Item allows the program to create myItem objects of frozen yogurt; objects with size, price, flavor and topping properties; in an array.
 * <?php $myItem = new Item(1,"Chocolate Froyo","Our Chocolate Froyo is sinful!",3.95); ?>
 * @todo none
-*/ 
+*/
 
 // Create Item Class
 
@@ -38,7 +38,7 @@ class Item
     public $Extras = array();
 
     //item constructor
-    
+
     public function __construct($ID,$Name,$Description,$Price)
     {
         $this->ID = $ID;
@@ -49,11 +49,37 @@ class Item
     }#end Item constructor
 
     //add the array items separately
-    
+
     public function addExtra($extra)
     {
         $this->Extras[] = $extra;
 
     }#end addExtra()
+
+    public function getItem($ID)
+    {
+      $idNum = $ID;
+      foreach ($myItem as $key => $value) {
+        if($key == $idNum){
+
+          $name = $this->Name;
+          $descr = $this->Description;
+          $price = $this->Price;
+
+          $objArray[] = $name;
+          $objArray[] = $descr;
+          $objArray[] = $price;
+
+        }
+        return $objArray;
+      }
+      // $idNum = $ID;
+      // $item = $this->$idNum;
+      // $nameX = $item->$Name;
+
+
+
+    }#end getItem($)
+
 
 }#end Item class
