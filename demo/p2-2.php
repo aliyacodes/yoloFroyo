@@ -114,6 +114,7 @@ function showData()
 
 	foreach($_POST as $name => $value)
     {//loop the form elements
+		// $value is the Qty of each item.
 
         //if form name attribute starts with 'item_', process it
       if(substr($name,0,5)=='item_')
@@ -134,7 +135,7 @@ function showData()
 
 					$total = $value * $itemArray['Price'];
 
-          echo '<p>You ordered '.$value.' of the '.$itemArray['Name'].' totaling '.$total.' </p>';
+          echo '<p>You ordered '.$value.' of the '.$itemArray['Name'].' at '.$itemArray['Price'].' each, totaling '.$total.' </p>';
 
 
         } //end post_ value
