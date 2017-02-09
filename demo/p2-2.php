@@ -111,62 +111,67 @@ function showData()
 
 
 	echo '<h3 align="center">' . smartTitle() . '</h3>';
+    
+    
+    if(array_sum($_POST) > 0){//if they ordered anything
+    
+        foreach($_POST as $name => $value)
+        {//loop the form elements
+            // $value is the Qty of each item.
+                
+        
+            //if form name attribute starts with 'item_', process it
+          if(substr($name,0,5)=='item_')
+          {
+                    if ((int)$value > 0 )
+                    {
+                         //explode the string into an array on the "_"
+                        $name_array = explode('_',$name);
 
-	foreach($_POST as $name => $value)
-    {//loop the form elements
-		// $value is the Qty of each item.
+                        //forcibly cast to an int in the process and "id" is the second element of the array.
+                        $id = (int)$name_array[1];
+                        // minus 1 to make id equal the correct number in items array.
+                        $id = $id - 1;
+                        //get global "items" from $config and put in $id var to call the correct one.
+                        $itemObj = $config->items[$id];
+                        //It calls an object of item. So convert to array of vars with "get_object_vars()"
+                        $itemArray = get_object_vars ( $itemObj );
 
-        //if form name attribute starts with 'item_', process it
-      if(substr($name,0,5)=='item_')
-      {
-				if ((int)$value > 0 )
-				{
-					 //explode the string into an array on the "_"
-					$name_array = explode('_',$name);
+                        $total = $value * $itemArray['Price'];
 
-					//forcibly cast to an int in the process and "id" is the second element of the array.
-					$id = (int)$name_array[1];
-					// minus 1 to make id equal the correct number in items array.
-					$id = $id - 1;
-					//get global "items" from $config and put in $id var to call the correct one.
-					$itemObj = $config->items[$id];
-					//It calls an object of item. So convert to array of vars with "get_object_vars()"
-					$itemArray = get_object_vars ( $itemObj );
+              echo $value.' '.$itemArray['Name'].' at $'.$itemArray['Price'].' each Totaling $'.$total.' </p>';
 
-					$total = $value * $itemArray['Price'];
+            } //end post_ value
 
-          echo $value.' '.$itemArray['Name'].' at $'.$itemArray['Price'].' each Totaling $'.$total.' </p>';
+                    //if form name attribute starts with 'item_', process it
+                    /*
+            if(substr($name,0,6)=='extra_1')
+            {
+                //explode the string into an array on the "_"
+                $name_array = explode('_',$name);
 
-        } //end post_ value
+                            foreach ($name_array as $key => $value) {
 
-				//if form name attribute starts with 'item_', process it
-				/*
-        if(substr($name,0,6)=='extra_1')
-        {
-            //explode the string into an array on the "_"
-            $name_array = explode('_',$name);
+                            if (is_array($_POST[$name])){
+                                var_dump($name);
+                                echo implode(', ',$name);
 
-						foreach ($name_array as $key => $value) {
+                            }else{
+                                echo $name;
+                            }
 
-						if (is_array($_POST[$name])){
-							var_dump($name);
-							echo implode(', ',$name);
+                                $id = (int)$name_array[1];
+                                echo "<p>You ordered $value of item number $id</p>";
+                            }//end for each
 
-						}else{
-							echo $name;
-						}
+                    } //substring extra */
 
-							$id = (int)$name_array[1];
-							echo "<p>You ordered $value of item number $id</p>";
-						}//end for each
-
-				} //substring extra */
-
-			}
-    }
-
-
-
+                }//end inner if block
+        }// end the foreach loop
+   }//end if they ordered anything
+   else {//if they didn't order anything
+        echo'<p>Are you an enemy of yogurt?</p>';
+   }//end else
 
 	echo '<p align="center"><a href="' . THIS_PAGE . '">RESET</a></p>';
 	get_footer(); #defaults to footer_inc.php
