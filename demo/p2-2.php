@@ -86,10 +86,10 @@ function showForm()
 						  </select> <b> ' . $item->Name . '</b> <i> ~ ' . $item->Description . '</i></p>';
 							//dumpDie($item);
 
-							foreach($item->Extras as $id => $toppings) {
+							foreach($item->Extras as $key => $toppings) {
 							//dumpDie($key);
-							echo '<p><input type="checkbox" value="' . $toppings . '" name="extra_' . $id . '_[]" /> ' . $toppings . ' </p>';
-							//dumpDie($id);
+							echo '<p><input type="checkbox" value="' . $toppings . '" name="extra_' . $key . '_[]" /> ' . $toppings . ' </p>';
+
 							}
 
 					}
@@ -126,52 +126,52 @@ function showData()
             //if form name attribute starts with 'item_', process it
           if(substr($name,0,5)=='item_')
           {
-            if ((int)$value > 0 )//cast $value into an int
+                    if ((int)$value > 0 )
+                    {
+                         //explode the string into an array on the "_"
+                        $name_array = explode('_',$name);
+
+                        //forcibly cast to an int in the process and "id" is the second element of the array.
+                        $id = (int)$name_array[1];
+                        // minus 1 to make id equal the correct number in items array.
+                        $id = $id - 1;
+                        //get global "items" from $config and put in $id var to call the correct one.
+                        $itemObj = $config->items[$id];
+                        //It calls an object of item. So convert to array of vars with "get_object_vars()"
+                        $itemArray = get_object_vars ( $itemObj );
+
+                        $total = $value * $itemArray['Price'];
+
+              echo $value.' '.$itemArray['Name'].' at ' . money_format('$%i', $itemArray['Price']) . ' each: ' . money_format('$%i', $total) . ' </p>';
+                        $runningTotal += $total;
+
+            } //end post_ value
+
+                    //if form name attribute starts with 'item_', process it
+                    /*
+            if(substr($name,0,6)=='extra_1')
             {
-               //explode the string into an array on the "_"
-              $name_array = explode('_',$name);
+                //explode the string into an array on the "_"
+                $name_array = explode('_',$name);
 
-              //forcibly cast to an int in the process and "id" is the second element of the array.
-              $id = (int)$name_array[1];
-              // minus 1 to make id equal the correct number in items array.
-              $id = $id - 1;
-              //get global "items" from $config and put in $id var to call the correct one.
-              $itemObj = $config->items[$id];
-              //It calls an object of item. So convert to array of vars with "get_object_vars()"
-              $itemArray = get_object_vars ( $itemObj );
+                            foreach ($name_array as $key => $value) {
 
-              $total = $value * $itemArray['Price'];
+                            if (is_array($_POST[$name])){
+                                var_dump($name);
+                                echo implode(', ',$name);
 
-              // echo $value.' '.$itemArray['Name'].' at ' . money_format('$%i', $itemArray['Price']) . ' each: ' . money_format('$%i', $total) . ' </p>';
-              // $runningTotal += $total;
+                            }else{
+                                echo $name;
+                            }
 
-    				} //end cast $value into an int
+                                $id = (int)$name_array[1];
+                                echo "<p>You ordered $value of item number $id</p>";
+                            }//end for each
 
-        }//end inner if block
+                    } //substring extra */
 
-//if form name attribute starts with 'extra_1', process it
-				if(substr($name,0,6)=='extra_')
-				{
-					//explode the string into an array on the "_"
-					$name_array = explode('_',$name);
-					//forcibly cast to an int in the process and "id" is the second element of the array.
-					//dumpDie($name_array);
-					$id = (int)$name_array[1];
-					// minus 1 to make id equal the correct number in items array.
-					$id = $id - 1;
-					//get global "items" from $config and put in $id var to call the correct one.
-					$itemObj = (array)$config->items;
-					$itemObj = $itemObj[][]
-					dumpDie($itemObj);
-					//It calls an object of item. So convert to array of vars with "get_object_vars()"
-					//$itemArray = get_object_vars ( $itemObj );
-
-				}
-
-				echo $value.' '.$itemArray['Name'].' with  at ' . money_format('$%i', $itemArray['Price']) . ' each: ' . money_format('$%i', $total) . ' </p>';
-				$runningTotal += $total;
-
-    }// end $_POST foreach loop
+                }//end inner if block
+        }// end the foreach loop
 
         //make variables for formatting the bill
         $subTotal = money_format('$%i', $runningTotal);
