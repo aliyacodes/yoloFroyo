@@ -75,29 +75,28 @@ function showForm()
 
 
 		foreach($config->items as $item)
-          {
-              echo '<p><b>Qty.</b>
-							<select name="item_' . $item->ID . '">
-						    <option value="0">0</option>
-						    <option value="1">1</option>
-						    <option value="2">2</option>
-						    <option value="3">3</option>
-						    <option value="4">4</option>
-						  </select> <b> ' . $item->Name . '</b> <i> ~ ' . $item->Description . '</i></p>
+    {
+        echo '<p><b>Qty.</b>
+				<select name="item_' . $item->ID . '">
+			    <option value="0">0</option>
+			    <option value="1">1</option>
+			    <option value="2">2</option>
+			    <option value="3">3</option>
+			    <option value="4">4</option>
+			  </select> <b> ' . $item->Name . '</b> <i> ~ ' . $item->Description . '</i></p>
 
 
-							<p><input type="checkbox" value="' . $item->Extras[0] . '" name="extra_' . $item->Extras[0] . '_[]" /> ' . $item->Extras[0] . ' </p>
-							<p><input type="checkbox" value="' . $item->Extras[1] . '" name="extra_' . $item->Extras[1] . '_[]" /> ' . $item->Extras[1] . ' </p>
-							<p><input type="checkbox" value="' . $item->Extras[2] . '" name="extra_' . $item->Extras[2] . '_[]" /> ' . $item->Extras[2] . ' </p><br><br>
+				<p><input type="checkbox" value="' . $item->Extras[0] . '" name="extra_' . $item->Extras[0] . '_[]" /> ' . $item->Extras[0] . ' </p>
+				<p><input type="checkbox" value="' . $item->Extras[1] . '" name="extra_' . $item->Extras[1] . '_[]" /> ' . $item->Extras[1] . ' </p>
+				<p><input type="checkbox" value="' . $item->Extras[2] . '" name="extra_' . $item->Extras[2] . '_[]" /> ' . $item->Extras[2] . ' </p><br><br>
+				';
+		}
 
-
-							';}
-
-          echo '
-				<p>
-					<input type="submit" value="Submit Order"><em>(<font color="red"><b>*</b> required field</font>)</em>
-				</p>
-		<input type="hidden" name="act" value="display" />
+  echo '
+	<p>
+		<input type="submit" value="Submit Order"><em>(<font color="red"><b>*</b> required field</font>)</em>
+	</p>
+	<input type="hidden" name="act" value="display" />
 	</form>
 	';
 	get_footer(); #defaults to footer_inc.php
@@ -111,63 +110,61 @@ function showData()
 
 
 	echo '<h3 align="center">' . smartTitle() . '</h3>';
-    
-    
-    if(array_sum($_POST) > 0){//if they ordered anything
-    
-        foreach($_POST as $name => $value)
-        {//loop the form elements
-            // $value is the Qty of each item.
-                
-        
-            //if form name attribute starts with 'item_', process it
-          if(substr($name,0,5)=='item_')
+
+
+  if(array_sum($_POST) > 0){//if they ordered anything
+
+      foreach($_POST as $name => $value)
+      {//loop the form elements
+      // $value is the Qty of each item.
+
+        //if form name attribute starts with 'item_', process it
+        if(substr($name,0,5)=='item_')
+        {
+          if ((int)$value > 0 )
           {
-                    if ((int)$value > 0 )
-                    {
-                         //explode the string into an array on the "_"
-                        $name_array = explode('_',$name);
+             //explode the string into an array on the "_"
+            $name_array = explode('_',$name);
 
-                        //forcibly cast to an int in the process and "id" is the second element of the array.
-                        $id = (int)$name_array[1];
-                        // minus 1 to make id equal the correct number in items array.
-                        $id = $id - 1;
-                        //get global "items" from $config and put in $id var to call the correct one.
-                        $itemObj = $config->items[$id];
-                        //It calls an object of item. So convert to array of vars with "get_object_vars()"
-                        $itemArray = get_object_vars ( $itemObj );
+            //forcibly cast to an int in the process and "id" is the second element of the array.
+            $id = (int)$name_array[1];
+            // minus 1 to make id equal the correct number in items array.
+            $id = $id - 1;
+            //get global "items" from $config and put in $id var to call the correct one.
+            $itemObj = $config->items[$id];
+            //It calls an object of item. So convert to array of vars with "get_object_vars()"
+            $itemArray = get_object_vars ( $itemObj );
 
-                        $total = $value * $itemArray['Price'];
+            $total = $value * $itemArray['Price'];
 
-              echo $value.' '.$itemArray['Name'].' at $'.$itemArray['Price'].' each Totaling $'.$total.' </p>';
+          echo $value.' '.$itemArray['Name'].' at $'.$itemArray['Price'].' each Totaling $'.$total.' </p>';
 
-            } //end post_ value
+  				} //end post_ value
 
-                    //if form name attribute starts with 'item_', process it
-                    /*
-            if(substr($name,0,6)=='extra_1')
-            {
-                //explode the string into an array on the "_"
-                $name_array = explode('_',$name);
+                  //if form name attribute starts with 'item_', process it
+                  /*
+          if(substr($name,0,6)=='extra_1')
+          {
+            //explode the string into an array on the "_"
+            $name_array = explode('_',$name);
 
-                            foreach ($name_array as $key => $value) {
+              foreach ($name_array as $key => $value) {
 
-                            if (is_array($_POST[$name])){
-                                var_dump($name);
-                                echo implode(', ',$name);
+              if (is_array($_POST[$name])){
+                  var_dump($name);
+                  echo implode(', ',$name);
 
-                            }else{
-                                echo $name;
-                            }
+              }else{
+                  echo $name;
+              }
 
-                                $id = (int)$name_array[1];
-                                echo "<p>You ordered $value of item number $id</p>";
-                            }//end for each
+                  $id = (int)$name_array[1];
+                  echo "<p>You ordered $value of item number $id</p>";
+              }//end for each
 
-                    } //substring extra */
-
-                }//end inner if block
-        }// end the foreach loop
+          } //substring extra */
+        }//end inner if block
+      }// end the foreach loop
    }//end if they ordered anything
    else {//if they didn't order anything
         echo'<p>Are you an enemy of yogurt?</p>';
