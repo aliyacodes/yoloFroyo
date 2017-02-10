@@ -88,7 +88,7 @@ function showForm()
 
 							foreach($item->Extras as $key => $toppings) {
 							//dumpDie($key);
-							echo '<p><input type="checkbox" value="' . $toppings . '" name="extra_' . $key . '_[]" /> ' . $toppings . ' </p>';
+							echo '<p><input type="checkbox" value="1" name="extra_1_' . $toppings . '_[]" /> ' . $toppings . ' </p>';
 
 							}
 
@@ -110,7 +110,7 @@ function showData()
     //dumpDie($_POST);
      get_header(); #defaults to footer_inc.php
 
-
+		 //dumpDie($_POST);
 	echo '<h3 align="center">' . smartTitle() . '</h3>';
 
 
@@ -118,59 +118,54 @@ function showData()
     {//if they ordered anything
 
         $runningTotal = 0;
+				$toppingTotal = '';
 
         foreach($_POST as $name => $value)
         {//loop the form elements
             // $value is the Qty of each item.
 
             //if form name attribute starts with 'item_', process it
-          if(substr($name,0,5)=='item_')
-          {
-                    if ((int)$value > 0 )
-                    {
-                         //explode the string into an array on the "_"
-                        $name_array = explode('_',$name);
+          		if(substr($name,0,5)=='item_')
+          		{
+								if ((int)$value > 0 )
+                {
+                     //explode the string into an array on the "_"
+                    $name_array = explode('_',$name);
 
-                        //forcibly cast to an int in the process and "id" is the second element of the array.
-                        $id = (int)$name_array[1];
-                        // minus 1 to make id equal the correct number in items array.
-                        $id = $id - 1;
-                        //get global "items" from $config and put in $id var to call the correct one.
-                        $itemObj = $config->items[$id];
-                        //It calls an object of item. So convert to array of vars with "get_object_vars()"
-                        $itemArray = get_object_vars ( $itemObj );
+                    //forcibly cast to an int in the process and "id" is the second element of the array.
+                    $id = (int)$name_array[1];
+                    // minus 1 to make id equal the correct number in items array.
+                    $id = $id - 1;
+                    //get global "items" from $config and put in $id var to call the correct one.
+                    $itemObj = $config->items[$id];
+                    //It calls an object of item. So convert to array of vars with "get_object_vars()"
+                    $itemArray = get_object_vars ( $itemObj );
 
-                        $total = $value * $itemArray['Price'];
+                    $total = $value * $itemArray['Price'];
 
-              echo $value.' '.$itemArray['Name'].' at ' . money_format('$%i', $itemArray['Price']) . ' each: ' . money_format('$%i', $total) . ' </p>';
-                        $runningTotal += $total;
+										echo '<p>'.$value.' '.$itemArray['Name'].' at ' . money_format('$%i', $itemArray['Price']) . ' each: ' . money_format('$%i', $total).'</p><p><b>Toppings:</b></p>';
 
-            } //end post_ value
+										$runningTotal += $total;
 
-                    //if form name attribute starts with 'item_', process it
-                    /*
-            if(substr($name,0,6)=='extra_1')
-            {
-                //explode the string into an array on the "_"
-                $name_array = explode('_',$name);
+								}//end if ((int)$value > 0 )
+							}//end if(substr($name,0,5)=='item_')
 
-                            foreach ($name_array as $key => $value) {
+							//if form name attribute starts with 'item_', process it
+							if(substr($name,0,7)=='extra_1')
+							{
+								if ((int)$value > 0 )
+                {
+								//explode the string into an array on the "_"
+								$strTopping = substr($name,8);
+								$strTopping = str_replace('_',' ',$strTopping);
+								$strTopping = trim($strTopping);
+								$toppingTotal = $strTopping;
+								//str_replace(find,replace,string,count)
+								//dumpDie($toppingTotal);
+								echo '<p><small><i>'. $toppingTotal . '</i></small></p>';
+								}
+							}//end if(substr($name,0,7)=='extra_1')
 
-                            if (is_array($_POST[$name])){
-                                var_dump($name);
-                                echo implode(', ',$name);
-
-                            }else{
-                                echo $name;
-                            }
-
-                                $id = (int)$name_array[1];
-                                echo "<p>You ordered $value of item number $id</p>";
-                            }//end for each
-
-                    } //substring extra */
-
-                }//end inner if block
         }// end the foreach loop
 
         //make variables for formatting the bill
@@ -179,7 +174,7 @@ function showData()
         $finalTotal = money_format('$%i', $runningTotal+$tax);
 
         //display the bill to user
-        echo '<p>Subtotal: ' . $subTotal . '</p>';
+        echo '<br><br><p>Subtotal: ' . $subTotal . '</p>';
         echo '<p>Tax: ' . $tax . '</p>';
         echo '<p>Your total: ' . $finalTotal . '</p>';
 
