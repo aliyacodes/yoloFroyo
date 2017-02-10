@@ -64,7 +64,7 @@ function showForm()
 	<script type="text/javascript">
 		function checkForm(thisForm)
 		{//check form data for valid info
-			if(empty(thisForm.YourName,"Please Enter Your Name")){return false;}
+			if(empty(thisForm.YourName,"Please Place Your Order")){return false;}
 			return true;//if all is passed, submit!
 		}
 	</script>
