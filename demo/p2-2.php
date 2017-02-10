@@ -75,7 +75,7 @@ function showForm()
 
 
 		foreach($config->items as $item)
-          {
+          {//Loop through Item Objects - getting id, name and description.
               echo '<p><b>Qty.</b>
 							<select name="item_' . $item->ID . '">
 						    <option value="0">0</option>
@@ -84,10 +84,9 @@ function showForm()
 						    <option value="3">3</option>
 						    <option value="4">4</option>
 						  </select> <b> ' . $item->Name . '</b> <i> ~ ' . $item->Description . '</i></p>';
-							//dumpDie($item);
 
-							foreach($item->Extras as $key => $toppings) {
-							//dumpDie($key);
+							foreach($item->Extras as $key => $toppings)
+							{//Loop through topping options of each Item object.
 							echo '<p><input type="checkbox" value="1" name="extra_1_' . $toppings . '_[]" /> ' . $toppings . ' </p>';
 
 							}
@@ -122,49 +121,50 @@ function showData()
 
         foreach($_POST as $name => $value)
         {//loop the form elements
-            // $value is the Qty of each item.
+         // $value is the Qty of each item.
 
-            //if form name attribute starts with 'item_', process it
-          		if(substr($name,0,5)=='item_')
-          		{
-								if ((int)$value > 0 )
-                {
-                     //explode the string into an array on the "_"
-                    $name_array = explode('_',$name);
+          //if form name attribute starts with 'item_', process it
+      		if(substr($name,0,5)=='item_')
+      		{
+						if ((int)$value > 0 )
+            {
+              //explode the string into an array on the "_"
+              $name_array = explode('_',$name);
+              //forcibly cast to an int in the process and "id" is the second element of the array.
+              $id = (int)$name_array[1];
+              // minus 1 to make id equal the correct number in items array.
+              $id = $id - 1;
+              //get global "items" from $config and put in $id var to call the correct one.
+              $itemObj = $config->items[$id];
+              //It calls an object of item. So convert to array of vars with "get_object_vars()"
+              $itemArray = get_object_vars ( $itemObj );
+							//multiply qty by price per piece
+              $total = $value * $itemArray['Price'];
+							//return each flavors total(qty) price/piece and total price per flavor
+							echo '<p>'.$value.' '.$itemArray['Name'].' at ' . money_format('$%i', $itemArray['Price']) . ' each: ' . money_format('$%i', $total).'</p><p><b>Toppings:</b></p>';
 
-                    //forcibly cast to an int in the process and "id" is the second element of the array.
-                    $id = (int)$name_array[1];
-                    // minus 1 to make id equal the correct number in items array.
-                    $id = $id - 1;
-                    //get global "items" from $config and put in $id var to call the correct one.
-                    $itemObj = $config->items[$id];
-                    //It calls an object of item. So convert to array of vars with "get_object_vars()"
-                    $itemArray = get_object_vars ( $itemObj );
+							//Keep a running total on everything looped.
+							$runningTotal += $total;
 
-                    $total = $value * $itemArray['Price'];
+						}//end if ((int)$value > 0 )
+					}//end if(substr($name,0,5)=='item_')
 
-										echo '<p>'.$value.' '.$itemArray['Name'].' at ' . money_format('$%i', $itemArray['Price']) . ' each: ' . money_format('$%i', $total).'</p><p><b>Toppings:</b></p>';
+					//if form name attribute starts with 'item_', process it
+					if(substr($name,0,7)=='extra_1')
+					{//if it's a topping and starts with 'extra_1'
+						if ((int)$value > 0 )
+            {
+						//Create a string that begins AFTER 'extra_1'.
+						$strTopping = substr($name,8);
+						//Replace the '_' with a space.
+						$strTopping = str_replace('_',' ',$strTopping);
+						//trim off spaces from beginning and end of string.
+						$strTopping = trim($strTopping);
 
-										$runningTotal += $total;
-
-								}//end if ((int)$value > 0 )
-							}//end if(substr($name,0,5)=='item_')
-
-							//if form name attribute starts with 'item_', process it
-							if(substr($name,0,7)=='extra_1')
-							{
-								if ((int)$value > 0 )
-                {
-								//explode the string into an array on the "_"
-								$strTopping = substr($name,8);
-								$strTopping = str_replace('_',' ',$strTopping);
-								$strTopping = trim($strTopping);
-								$toppingTotal = $strTopping;
-								//str_replace(find,replace,string,count)
-								//dumpDie($toppingTotal);
-								echo '<p><small><i>'. $toppingTotal . '</i></small></p>';
-								}
-							}//end if(substr($name,0,7)=='extra_1')
+						///print each topping 
+						echo '<p><small><i>'. $strTopping . '</i></small></p>';
+						}//end if ((int)$value > 0 )
+					}//end if(substr($name,0,7)=='extra_1')
 
         }// end the foreach loop
 
