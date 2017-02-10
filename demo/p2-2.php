@@ -83,15 +83,16 @@ function showForm()
 						    <option value="2">2</option>
 						    <option value="3">3</option>
 						    <option value="4">4</option>
-						  </select> <b> ' . $item->Name . '</b> <i> ~ ' . $item->Description . '</i></p>
+						  </select> <b> ' . $item->Name . '</b> <i> ~ ' . $item->Description . '</i></p>';
+							//dumpDie($item);
 
+							foreach($item->Extras as $key => $toppings) {
+							//dumpDie($key);
+							echo '<p><input type="checkbox" value="' . $toppings . '" name="extra_' . $key . '_[]" /> ' . $toppings . ' </p>';
 
-							<p><input type="checkbox" value="' . $item->Extras[0] . '" name="extra_' . $item->Extras[0] . '_[]" /> ' . $item->Extras[0] . ' </p>
-							<p><input type="checkbox" value="' . $item->Extras[1] . '" name="extra_' . $item->Extras[1] . '_[]" /> ' . $item->Extras[1] . ' </p>
-							<p><input type="checkbox" value="' . $item->Extras[2] . '" name="extra_' . $item->Extras[2] . '_[]" /> ' . $item->Extras[2] . ' </p><br><br>
+							}
 
-
-							';}
+					}
 
           echo '
 				<p>
@@ -111,18 +112,17 @@ function showData()
 
 
 	echo '<h3 align="center">' . smartTitle() . '</h3>';
-    
-    
+
+
     if(array_sum($_POST) > 0)
     {//if they ordered anything
-        
+
         $runningTotal = 0;
-    
+
         foreach($_POST as $name => $value)
         {//loop the form elements
             // $value is the Qty of each item.
-                
-        
+
             //if form name attribute starts with 'item_', process it
           if(substr($name,0,5)=='item_')
           {
@@ -141,10 +141,10 @@ function showData()
                         $itemArray = get_object_vars ( $itemObj );
 
                         $total = $value * $itemArray['Price'];
-                        
+
               echo $value.' '.$itemArray['Name'].' at ' . money_format('$%i', $itemArray['Price']) . ' each: ' . money_format('$%i', $total) . ' </p>';
                         $runningTotal += $total;
-                        
+
             } //end post_ value
 
                     //if form name attribute starts with 'item_', process it
@@ -172,17 +172,17 @@ function showData()
 
                 }//end inner if block
         }// end the foreach loop
-        
+
         //make variables for formatting the bill
         $subTotal = money_format('$%i', $runningTotal);
         $tax = money_format('$%i', $runningTotal*.09);
         $finalTotal = money_format('$%i', $runningTotal+$tax);
-        
+
         //display the bill to user
         echo '<p>Subtotal: ' . $subTotal . '</p>';
         echo '<p>Tax: ' . $tax . '</p>';
         echo '<p>Your total: ' . $finalTotal . '</p>';
-        
+
    }//end if they ordered anything
    else {//if they didn't order anything
         echo'<p>Are you an enemy of yogurt?</p>';

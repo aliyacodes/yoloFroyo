@@ -4,21 +4,21 @@
 //Create objects
 
 $myItem = new Item(1,"Chocolate Froyo","Our Chocolate Froyo is sinful!",3.95);
-$myItem->addExtra("Sprinkles");
-$myItem->addExtra("Chocolate Sauce");
-$myItem->addExtra("Nuts");
+$myItem->addExtra("Fudge");
+$myItem->addExtra("Cocoa nibs");
+$myItem->addExtra("Toasted almonds");
 $config->items[] = $myItem;
 
 $myItem = new Item(2,"Vanilla Froyo","Our Vanilla Froyo is exotic!",3.95);
-$myItem->addExtra("Sprinkles");
-$myItem->addExtra("Chocolate Sauce");
-$myItem->addExtra("Nuts");
+$myItem->addExtra("Rainbow sprinkles");
+$myItem->addExtra("Chocolate chips");
+$myItem->addExtra("Peanuts");
 $config->items[] = $myItem;
 
 $myItem = new Item(3,"Chocolate & Vanilla swirl Froyo","Our swirl Froyo is the best of both worlds!",3.95);
-$myItem->addExtra("Sprinkles");
-$myItem->addExtra("Chocolate Sauce");
-$myItem->addExtra("Nuts");
+$myItem->addExtra("Chocolate Sprinkles");
+$myItem->addExtra("Caramel");
+$myItem->addExtra("Toasted almonds");
 $config->items[] = $myItem;
 
 /**
@@ -56,30 +56,6 @@ class Item
 
     }#end addExtra()
 
-    public function getItem($ID)
-    {
-      $idNum = $ID;
-      foreach ($myItem as $key => $value) {
-        if($key == $idNum){
-
-          $name = $this->Name;
-          $descr = $this->Description;
-          $price = $this->Price;
-
-          $objArray[] = $name;
-          $objArray[] = $descr;
-          $objArray[] = $price;
-
-        }
-        return $objArray;
-      }
-      // $idNum = $ID;
-      // $item = $this->$idNum;
-      // $nameX = $item->$Name;
-
-
-
-    }#end getItem($)
 
 
 }#end Item class
