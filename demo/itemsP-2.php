@@ -12,13 +12,16 @@ $config->items[] = $myItem;
 $myItem = new Item(2,"Vanilla Froyo","Our Vanilla Froyo is exotic!",3.95);
 $myItem->addExtra("Rainbow sprinkles");
 $myItem->addExtra("Chocolate chips");
-$myItem->addExtra("Peanuts");
+$myItem->addExtra("Strawberries");
+$myItem->addExtra("Pineapple");
+$myItem->addExtra("Orange Slices");
 $config->items[] = $myItem;
 
 $myItem = new Item(3,"Chocolate & Vanilla swirl Froyo","Our swirl Froyo is the best of both worlds!",3.95);
 $myItem->addExtra("Chocolate Sprinkles");
 $myItem->addExtra("Caramel");
 $myItem->addExtra("Toasted almonds");
+$myItem->addExtra("Graham cracker crumbs");
 $config->items[] = $myItem;
 
 /**
