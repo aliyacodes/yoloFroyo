@@ -68,7 +68,7 @@ function showForm()
 			return true;//if all is passed, submit!
 		}
 	</script>
-	<h3 align="center">' . smartTitle() . '</h3>
+	<h3 align="center">YoloFroyo</h3>
 	<p align="center">Please enter your name</p>
 	<form action="' . THIS_PAGE . '" method="post" onsubmit="return checkForm(this);">
              ';
@@ -109,7 +109,7 @@ function showData()
      get_header(); #defaults to footer_inc.php
 
 		 //dumpDie($_POST);
-	echo '<h3 align="center">' . smartTitle() . '</h3>';
+	echo '<h3 align="center">YoloFroyo</h3>';
 
 
     if(array_sum($_POST) > 0)
