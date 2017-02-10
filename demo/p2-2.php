@@ -168,14 +168,14 @@ function showData()
         }// end the foreach loop
 
         //make variables for formatting the bill
-        $subTotal = money_format('$%i', $runningTotal);
-        $tax = money_format('$%i', $runningTotal*.09);
-        $finalTotal = money_format('$%i', $runningTotal+$tax);
+        $subTotal = $runningTotal;
+        $tax = $subTotal * .09;
+        $finalTotal = $subTotal + $tax;
 
         //display the bill to user
-        echo '<br><br><p>Subtotal: ' . $subTotal . '</p>';
-        echo '<p>Tax: ' . $tax . '</p>';
-        echo '<p>Your total: ' . $finalTotal . '</p>';
+        echo '<br><br><p>Subtotal: ' . money_format('$%i', $subTotal) . '</p>';
+        echo '<p>Tax: ' . money_format('$%i', $tax) . '</p>';
+        echo '<p>Your total: ' . money_format('$%i', $finalTotal) . '</p>';
 
    }//end if they ordered anything
    else {//if they didn't order anything
