@@ -75,28 +75,27 @@ function showForm()
 
 
 		foreach($config->items as $item)
-          {//Loop through Item Objects - getting id, name and description.
-              echo '<p><b>Qty.</b>
-							<select name="item_' . $item->ID . '">
-						    <option value="0">0</option>
-						    <option value="1">1</option>
-						    <option value="2">2</option>
-						    <option value="3">3</option>
-						    <option value="4">4</option>
-						  </select> <b> ' . $item->Name . '</b> <i> ~ ' . $item->Description . '</i></p>';
+    {//Loop through Item Objects - getting id, name and description.
+        echo '<p><b>Qty.</b>
+				<select name="item_' . $item->ID . '">
+			    <option value="0">0</option>
+			    <option value="1">1</option>
+			    <option value="2">2</option>
+			    <option value="3">3</option>
+			    <option value="4">4</option>
+			  </select> <b> ' . $item->Name . '</b> <i> ~ ' . $item->Description . '</i></p>';
 
-							foreach($item->Extras as $key => $toppings)
-							{//Loop through topping options of each Item object.
-							echo '<p><input type="checkbox" value="1" name="extra_1_' . $toppings . '_[]" /> ' . $toppings . ' </p>';
+			foreach($item->Extras as $key => $toppings)
+			{//Loop through topping options of each Item object.
+				echo '<p><input type="checkbox" value="1" name="extra_1_' . $toppings . '_[]" /> ' . $toppings . ' </p>';
+			}//End of toppings foreach loop
 
-							}
+		}//end loop though items
 
-					}
-
-          echo '
-				<p>
-					<input type="submit" value="Submit Order"><em>(<font color="red"><b>*</b> required field</font>)</em>
-				</p>
+  echo '
+			<p>
+				<input type="submit" value="Submit Order"> <em>(<font color="red"><b>*</b> required field</font>)</em>
+			</p>
 		<input type="hidden" name="act" value="display" />
 	</form>
 	';
@@ -114,40 +113,40 @@ function showData()
 
 
     if(array_sum($_POST) > 0)
-    {//if they ordered anything
+    { //if they ordered anything
 
-        $runningTotal = 0;
-				$toppingTotal = '';
+      $runningTotal = 0 ;
+			$toppingTotal = '';
 
-        foreach($_POST as $name => $value)
-        {//loop the form elements
-         // $value is the Qty of each item.
+      foreach($_POST as $name => $value)
+      {//loop the form elements
+       // $value is the Qty of each item.
 
-          //if form name attribute starts with 'item_', process it
-      		if(substr($name,0,5)=='item_')
-      		{
-						if ((int)$value > 0 )
-            {
-              //explode the string into an array on the "_"
-              $name_array = explode('_',$name);
-              //forcibly cast to an int in the process and "id" is the second element of the array.
-              $id = (int)$name_array[1];
-              // minus 1 to make id equal the correct number in items array.
-              $id = $id - 1;
-              //get global "items" from $config and put in $id var to call the correct one.
-              $itemObj = $config->items[$id];
-              //It calls an object of item. So convert to array of vars with "get_object_vars()"
-              $itemArray = get_object_vars ( $itemObj );
-							//multiply qty by price per piece
-              $total = $value * $itemArray['Price'];
-							//return each flavors total(qty) price/piece and total price per flavor
-							echo '<p>'.$value.' '.$itemArray['Name'].' at ' . money_format('$%i', $itemArray['Price']) . ' each: ' . money_format('$%i', $total).'</p><p><b>Toppings:</b></p>';
+        //if form name attribute starts with 'item_', process it
+    		if(substr($name,0,5)=='item_')
+    		{
+					if ((int)$value > 0 )//if qty is greater than 0
+          {
+            //explode the string into an array on the "_"
+            $name_array = explode('_',$name);
+            //forcibly cast to an int in the process and "id" is the second element of the array.
+            $id = (int)$name_array[1];
+            // minus 1 to make id equal the correct number in items array.
+            $id = $id - 1;
+            //get global "items" from $config and put in $id var to call the correct one.
+            $itemObj = $config->items[$id];
+            //It calls an object of item. So convert to array of vars with "get_object_vars()"
+            $itemArray = get_object_vars ( $itemObj );
+						//multiply qty by price per piece
+            $total = $value * $itemArray['Price'];
+						//return each flavors total(qty) price/piece and total price per flavor
+						echo '<p>'.$value.' '.$itemArray['Name'].' at ' . money_format('$%i', $itemArray['Price']) . ' each: ' . money_format('$%i', $total).'</p><p><b>Toppings:</b></p>';
 
-							//Keep a running total on everything looped.
-							$runningTotal += $total;
+						//Keep a running total on everything looped.
+						$runningTotal += $total;
 
-						}//end if ((int)$value > 0 )
-					}//end if(substr($name,0,5)=='item_')
+					}//end if ((int)$value > 0 )
+				}//end if(substr($name,0,5)=='item_')
 
 					//if form name attribute starts with 'item_', process it
 					if(substr($name,0,7)=='extra_1')
@@ -161,7 +160,7 @@ function showData()
 						//trim off spaces from beginning and end of string.
 						$strTopping = trim($strTopping);
 
-						///print each topping 
+						///print each topping
 						echo '<p><small><i>'. $strTopping . '</i></small></p>';
 						}//end if ((int)$value > 0 )
 					}//end if(substr($name,0,7)=='extra_1')
@@ -180,7 +179,7 @@ function showData()
 
    }//end if they ordered anything
    else {//if they didn't order anything
-        echo'<p>Are you an enemy of yogurt?</p>';
+        echo'<h2>Are you an enemy of yogurt?</h2>';
    }//end else
 
 	echo '<p align="center"><a href="' . THIS_PAGE . '">RESET</a></p>';
