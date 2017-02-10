@@ -69,7 +69,7 @@ function showForm()
 		}
 	</script>
 	<h3 align="center">YoloFroyo</h3>
-	<p align="center">Please enter your name</p>
+	<p align="center">Please enter your Order</p>
 	<form action="' . THIS_PAGE . '" method="post" onsubmit="return checkForm(this);">
              ';
 
@@ -108,8 +108,9 @@ function showData()
     //dumpDie($_POST);
      get_header(); #defaults to footer_inc.php
 
-		 //dumpDie($_POST);
+
 	echo '<h3 align="center">YoloFroyo</h3>';
+	echo '<p align="center">Your Order</p>';
 
 
     if(array_sum($_POST) > 0)
